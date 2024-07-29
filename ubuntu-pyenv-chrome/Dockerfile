@@ -1,4 +1,8 @@
-FROM ducledev/ubuntu-pyenv:20.04_3.9.11
+ARG IMAGE_TAG
+FROM ducledev/ubuntu-pyenv:${IMAGE_TAG}}
+
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ="UTC"
 
 #bypass the installation of google-chrome-stable
 # gg chrome driver refs:
