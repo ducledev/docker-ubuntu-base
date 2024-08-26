@@ -1,5 +1,5 @@
-ARG IMAGE_TAG
-FROM ducledev/ubuntu-pyenv:${IMAGE_TAG}}
+ARG UBUNTU_PYENV_IMAGE_TAG="20.04_3.9.11"
+FROM ducledev/ubuntu-pyenv:${UBUNTU_PYENV_IMAGE_TAG}
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ="UTC"
