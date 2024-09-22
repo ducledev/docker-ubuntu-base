@@ -1,12 +1,15 @@
 #!/bin/bash
 
 # sample command
-# source .2004_3911.env && ./build_base_chrome_image.sh
+# ./build_base_chrome_image.sh
+
+source .env
+IMAGE_NAME="ducledev/ubuntu-pyenv-chrome:${IMAGE_TAG}"
 
 echo "IMAGE_TAG: ${IMAGE_TAG}"
 echo "UBUNTU_PYENV_IMAGE_TAG: ${UBUNTU_PYENV_IMAGE_TAG}"
 
-echo "-- Build docker image IMAGE_NAME="ducledev/ubuntu-pyenv-chrome:${IMAGE_TAG}""
+echo "-- Build docker image IMAGE_NAME=${IMAGE_NAME}"
 
 if [ -z "${IMAGE_TAG}" ]; then
     echo "Please use .env file to get IMAGE_TAG variable"
@@ -18,9 +21,16 @@ if [ -z "${UBUNTU_PYENV_IMAGE_TAG}" ]; then
     exit
 fi
 
-docker buildx build --platform linux/amd64 --no-cache -f Dockerfile \
--t ${IMAGE_NAME} \
---build-arg UBUNTU_PYENV_IMAGE_TAG="${UBUNTU_PYENV_IMAGE_TAG}"  .
+# If you're using docker buildx build, 
+# by default it doesn't automatically load the image into your local Docker daemon.
+# You need to add the --load flag
+
+docker buildx build -f Dockerfile -t ${IMAGE_NAME} \
+--push \
+--load \
+--platform linux/amd64 --no-cache \
+--build-arg UBUNTU_PYENV_IMAGE_TAG=${UBUNTU_PYENV_IMAGE_TAG}  .
+
 
 echo "-- End building docker image: ${IMAGE_NAME}"
 
